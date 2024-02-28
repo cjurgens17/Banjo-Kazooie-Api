@@ -10,7 +10,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("BKCharacter")
-@CrossOrigin(allowCredentials = "true")
+@CrossOrigin
 public class BKCharacterController {
     /*
     Controller which provides all GET requests that have to do with Banjo Kazooie Character Request
