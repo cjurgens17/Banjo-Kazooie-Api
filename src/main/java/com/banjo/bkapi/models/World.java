@@ -23,12 +23,20 @@ public class World extends BaseEntity {
     @Column(name = "jigsawsNeeded")
     private int jigsawsNeeded;
 
+    @OneToOne
+    private GruntildaPlatform gruntildaPlatform;
+
     @OneToMany(mappedBy = "world", cascade = CascadeType.ALL, orphanRemoval = true)
     @Column(name="jinzos")
     private List<Jinzo> jinzos;
 
+    @OneToMany(mappedBy = "world", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Column(name="honeycombs")
+    private List<Honeycomb> honeycombs;
 
-    //ADD:
-    //HoneyCombs
-    //GruntildaPlatform
+    @OneToMany(mappedBy = "world", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Column(name = "jiggies")
+    private List<Jiggy> jiggies;
+
+
 }

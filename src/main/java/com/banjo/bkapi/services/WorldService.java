@@ -25,4 +25,8 @@ public class WorldService {
         //sorted by id
         return Optional.of(worldRepository.findAll(Sort.by(Sort.Direction.ASC, "id")));
     }
+
+    public Optional<World> getWorldByName(String name){
+        return worldRepository.findByName(name);
+    }
 }
