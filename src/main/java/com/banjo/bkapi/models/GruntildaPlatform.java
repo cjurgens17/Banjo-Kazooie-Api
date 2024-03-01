@@ -19,6 +19,6 @@ public class GruntildaPlatform extends BaseEntity {
     private String location;
 
     @OneToOne
-    @JoinColumn(name = "worldId")
+    @JoinColumn(name = "world_id")
     private World world;
 }

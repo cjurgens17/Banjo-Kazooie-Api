@@ -16,7 +16,7 @@ import java.util.Optional;
 public class GruntildaPlatformController {
 
       /*
-    Controller which provides all GET requests that have to do with Banjo Kazooie Jinzo Request
+    Controller which provides all GET requests that have to do with Banjo Kazooie gruntildaPlatform Request
             Endpoints:
              /gruntildaPlatform/{id}
              /gruntildaPlatform/{worldName}

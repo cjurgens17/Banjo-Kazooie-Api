@@ -1,7 +1,6 @@
 package com.banjo.bkapi.models;
 
 
-import com.banjo.bkapi.enums.Color;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,19 +10,20 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
-@Table(name="jinzos")
-public class Jinzo  extends BaseEntity{
-
-    @Column(name="color")
-    private Color color;
+@NoArgsConstructor
+@Table(name = "jiggyPad")
+public class JiggyPad extends BaseEntity {
 
     @Lob
-    @Column(name="location")
+    @Column(name = "location")
     private String location;
 
-    @ManyToOne
-    @JoinColumn(name="world_id")
+    @OneToOne
+    @JoinColumn(name = "word_id")
     private World world;
+
+    @ManyToOne
+    @JoinColumn(name = "hub_world_id")
+    private HubWorld hubWorld;
 }

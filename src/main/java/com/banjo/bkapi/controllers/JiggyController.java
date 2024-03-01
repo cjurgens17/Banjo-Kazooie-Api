@@ -14,7 +14,7 @@ import java.util.List;
 public class JiggyController {
 
      /*
-    Controller which provides all GET requests that have to do with Banjo Kazooie Jinzo Request
+    Controller which provides all GET requests that have to do with Banjo Kazooie Jiggy Request
             Endpoints:
              /jiggy/{id}
              /jiggy/world/{id}

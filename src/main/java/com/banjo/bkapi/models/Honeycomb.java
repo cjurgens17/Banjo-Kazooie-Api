@@ -19,11 +19,11 @@ public class Honeycomb extends BaseEntity {
     @Column(name = "location")
     private String location;
 
-    @JoinColumn(name = "worldId")
-    @OneToMany
+    @JoinColumn(name = "world_Id")
+    @ManyToOne
     private World world;
 
-
-    //add
-//    private HubWorld hubWorld;
+    @ManyToOne
+    @JoinColumn(name = "hub_World_Id")
+    private HubWorld hubWorld;
 }

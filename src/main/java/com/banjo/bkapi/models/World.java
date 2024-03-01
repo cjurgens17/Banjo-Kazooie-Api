@@ -20,10 +20,15 @@ public class World extends BaseEntity {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "jigsawsNeeded")
+    @Column(name = "jigsaws_needed")
     private int jigsawsNeeded;
 
     @OneToOne
+    @JoinColumn(name = "jiggy_pad_id")
+    private JiggyPad jiggyPad;
+
+    @OneToOne
+    @JoinColumn(name = "gruntilda_platform_id")
     private GruntildaPlatform gruntildaPlatform;
 
     @OneToMany(mappedBy = "world", cascade = CascadeType.ALL, orphanRemoval = true)

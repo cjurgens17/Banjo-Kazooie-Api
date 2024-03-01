@@ -13,7 +13,7 @@ import java.util.List;
 public class WorldController {
 
       /*
-    Controller which provides all GET requests that have to do with Banjo Kazooie Jinzo Request
+    Controller which provides all GET requests that have to do with Banjo Kazooie World Request
             Endpoints:
              /world/{id}
              /world/all

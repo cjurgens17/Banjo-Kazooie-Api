@@ -14,7 +14,7 @@ import java.util.List;
 public class HoneycombController {
 
      /*
-    Controller which provides all GET requests that have to do with Banjo Kazooie Jinzo Request
+    Controller which provides all GET requests that have to do with Banjo Kazooie Honeycomb Request
             Endpoints:
              /honeycomb/{id}
              /honeycomb/world/{id}

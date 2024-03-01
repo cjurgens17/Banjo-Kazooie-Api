@@ -20,8 +20,10 @@ public class Jiggy extends BaseEntity {
     private String location;
 
     @ManyToOne
-    @JoinColumn(name = "worldId")
+    @JoinColumn(name = "world_id")
     private World world;
 
-    //have to add hubworld at a later point
+    @ManyToOne
+    @JoinColumn(name = "hub_world_id")
+    private HubWorld hubWorld;
 }
