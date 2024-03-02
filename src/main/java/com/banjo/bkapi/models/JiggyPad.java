@@ -1,6 +1,8 @@
 package com.banjo.bkapi.models;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,11 +21,32 @@ public class JiggyPad extends BaseEntity {
     @Column(name = "location")
     private String location;
 
-    @OneToOne
-    @JoinColumn(name = "word_id")
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "word", insertable = false, updatable = false)
+    @JsonIgnore
     private World world;
 
-    @ManyToOne
-    @JoinColumn(name = "hub_world_id")
+    @Column(name = "world_id")
+    private Long worldId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "hub_world", insertable = false,updatable = false)
+    @JsonIgnore
+    @JsonIgnoreProperties("jiggyPads")
     private HubWorld hubWorld;
+
+    @Column(name = "hub_world_id")
+    private Long hubWorldId;
+
+
+    @PostLoad
+    public void postLoad(){
+        if(world != null){
+            worldId = world.getId();
+        }
+
+        if(hubWorld != null){
+            hubWorldId = hubWorld.getId();
+        }
+    }
 }

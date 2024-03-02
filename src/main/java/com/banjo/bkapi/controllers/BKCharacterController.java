@@ -15,8 +15,8 @@ public class BKCharacterController {
     /*
     Controller which provides all GET requests that have to do with Banjo Kazooie Character Request
             Endpoints:
-             /BKCharacter/{name}
-             /BKCharacter/{id}
+             /BKCharacter/name/{name}
+             /BKCharacter/id/{id}
              /BKCharacter/description/{id}
      */
     private final BKCharacterService bkCharacterService;
@@ -25,7 +25,7 @@ public class BKCharacterController {
         this.bkCharacterService = bkCharacterService;
     }
 
-    @GetMapping("/{name}")
+    @GetMapping("/name/{name}")
     public ResponseEntity<BKCharacter> getBKCharacterByName(@PathVariable String name){
         Optional<BKCharacter> optionalBKCharacter = bkCharacterService.findCharacterByName(name);
 
@@ -33,7 +33,7 @@ public class BKCharacterController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/id/{id}")
     public ResponseEntity<BKCharacter> getBKCharacterById(@PathVariable Long id){
         Optional<BKCharacter> optionalBKCharacter = bkCharacterService.findCharacterById(id);
 

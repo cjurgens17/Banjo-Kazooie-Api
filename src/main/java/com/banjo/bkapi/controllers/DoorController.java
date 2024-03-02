@@ -14,7 +14,7 @@ public class DoorController {
       /*
     Controller which provides all GET requests that have to do with Banjo Kazooie Door Request
             Endpoints:
-             /door/{id}
+             /door/id/{id}
      */
 
     private final DoorService doorService;
@@ -23,7 +23,7 @@ public class DoorController {
         this.doorService = doorService;
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/id/{id}")
     public ResponseEntity<Door> getDoorById(@PathVariable Long id){
         return doorService.getDoorById(id)
                 .map(ResponseEntity::ok)

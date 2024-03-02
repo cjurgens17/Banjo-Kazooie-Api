@@ -18,8 +18,8 @@ public class JinzoController {
       /*
     Controller which provides all GET requests that have to do with Banjo Kazooie Jinzo Request
             Endpoints:
-             /jinzo/{color}
-             /jinzo/{id}
+             /jinzo/color/{color}
+             /jinzo/id/{id}
              /jinzo/world/{id}
      */
 
@@ -29,7 +29,7 @@ public class JinzoController {
         this.jinzoService = jinzoService;
     }
 
-    @GetMapping("/{color}")
+    @GetMapping("/color/{color}")
     public ResponseEntity<List<Jinzo>> getAllJinzoByColor(@PathVariable String color){
         Color requestedColor = Color.getColorFromString(color);
 
@@ -39,7 +39,7 @@ public class JinzoController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/id/{id}")
     public ResponseEntity<Jinzo> getJinzoById(@PathVariable Long id){
         Optional<Jinzo> optionalJinzo = jinzoService.findById(id);
 

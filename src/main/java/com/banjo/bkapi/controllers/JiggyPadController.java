@@ -18,7 +18,7 @@ public class JiggyPadController {
       /*
     Controller which provides all GET requests that have to do with Banjo Kazooie JiggyPad Request
             Endpoints:
-             /jiggyPad/{id}
+             /jiggyPad/id/{id}
              /jiggyPad/world/{id}
      */
 
@@ -28,7 +28,7 @@ public class JiggyPadController {
         this.jiggyPadService = jiggyPadService;
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/id/{id}")
     public ResponseEntity<JiggyPad> getJiggyPadById(@PathVariable Long id){
         return jiggyPadService.getJiggyPadById(id)
                 .map(ResponseEntity::ok)

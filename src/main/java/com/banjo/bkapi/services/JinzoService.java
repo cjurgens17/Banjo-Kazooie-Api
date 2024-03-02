@@ -37,5 +37,9 @@ public class JinzoService {
         return Optional.of(filteredByWorld);
     }
 
+    public Optional<List<Jinzo>> findAllJinzos(){
+        return Optional.of(jinzoRepository.findAll());
+    }
+
 
 }

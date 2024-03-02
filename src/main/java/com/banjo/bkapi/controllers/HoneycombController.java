@@ -16,7 +16,7 @@ public class HoneycombController {
      /*
     Controller which provides all GET requests that have to do with Banjo Kazooie Honeycomb Request
             Endpoints:
-             /honeycomb/{id}
+             /honeycomb/id/{id}
              /honeycomb/world/{id}
              /honeycomb/all
      */
@@ -28,7 +28,7 @@ public class HoneycombController {
     }
 
 
-    @GetMapping("/{id}")
+    @GetMapping("/id/{id}")
     public ResponseEntity<Honeycomb> getHoneycombById(@PathVariable Long id){
         return honeycombService.getHoneycombById(id)
                 .map(ResponseEntity::ok).

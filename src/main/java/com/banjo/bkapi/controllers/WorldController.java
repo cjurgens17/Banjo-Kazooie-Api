@@ -15,7 +15,7 @@ public class WorldController {
       /*
     Controller which provides all GET requests that have to do with Banjo Kazooie World Request
             Endpoints:
-             /world/{id}
+             /world/id/{id}
              /world/all
      */
 
@@ -25,7 +25,7 @@ public class WorldController {
         this.worldService = worldService;
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/id/{id}")
     public ResponseEntity<World> getWorldById(@PathVariable Long id){
         return worldService.findWorldById(id).map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());

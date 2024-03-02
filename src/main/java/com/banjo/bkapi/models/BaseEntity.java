@@ -1,9 +1,6 @@
 package com.banjo.bkapi.models;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,5 +17,6 @@ public class BaseEntity implements Serializable {
 
    @Id
    @GeneratedValue(strategy = GenerationType.AUTO)
+   @Column(name = "id")
     private Long id;
 }

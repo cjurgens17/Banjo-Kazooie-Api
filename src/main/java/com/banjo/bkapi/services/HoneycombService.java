@@ -31,4 +31,8 @@ public class HoneycombService {
                 .filter(honeycomb -> Objects.equals(honeycomb.getWorld().getId(), id))
                 .collect(Collectors.toList()));
     }
+
+    public Optional<List<Honeycomb>> findAllHoneycombs(){
+        return Optional.of(honeycombRepository.findAll());
+    }
 }

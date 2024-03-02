@@ -2,6 +2,9 @@ package com.banjo.bkapi.models;
 
 
 import com.banjo.bkapi.enums.Color;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,7 +26,20 @@ public class Jinzo  extends BaseEntity{
     @Column(name="location")
     private String location;
 
-    @ManyToOne
-    @JoinColumn(name="world_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="world", insertable = false, updatable = false)
+    @JsonIgnore
+    @JsonIgnoreProperties("jinzos")
     private World world;
+
+    @Column(name = "world_id")
+    private Long worldId;
+
+    @PostLoad
+    public void postLoad() {
+        if (world != null) {
+            worldId = world.getId();
+        }
+    }
+
 }

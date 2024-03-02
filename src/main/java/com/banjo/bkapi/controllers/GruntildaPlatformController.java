@@ -18,8 +18,8 @@ public class GruntildaPlatformController {
       /*
     Controller which provides all GET requests that have to do with Banjo Kazooie gruntildaPlatform Request
             Endpoints:
-             /gruntildaPlatform/{id}
-             /gruntildaPlatform/{worldName}
+             /gruntildaPlatform/id/{id}
+             /gruntildaPlatform/world/{worldName}
              /gruntildaPlatform/all
      */
 
@@ -31,14 +31,14 @@ public class GruntildaPlatformController {
         this.worldService = worldService;
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/id/{id}")
     public ResponseEntity<GruntildaPlatform> getGruntildaPlatformById(@PathVariable Long id){
         return gruntildaPlatformService.getGruntildaPlatformById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/{worldName}")
+    @GetMapping("/world/{worldName}")
     public ResponseEntity<GruntildaPlatform> getGruntildaPlatformByWorld(@PathVariable String worldName){
         Optional<World> persistenceWorld = worldService.getWorldByName(worldName);
         if(persistenceWorld.isEmpty()) return ResponseEntity.notFound().build();

@@ -19,11 +19,11 @@ public class HubWorldController {
       /*
     Controller which provides all GET requests that have to do with Banjo Kazooie Hubworld Request
             Endpoints:
-             /hubWorld/{id}
-             /hubWorld/doors/{id}
-             /hubWord/honeycombs/{id}
-             /hubWorld/jiggies/{id}
-             /hubWorld/jiggypads/{id}
+             /hubWorld/id/{id}
+             /hubWorld/doors/id/{id}
+             /hubWord/honeycombs/id/{id}
+             /hubWorld/jiggies/id/{id}
+             /hubWorld/jiggypads/id/{id}
      */
 
     private final HubWorldService hubWorldService;
@@ -32,35 +32,35 @@ public class HubWorldController {
         this.hubWorldService = hubWorldService;
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/id/{id}")
     public ResponseEntity<HubWorld> getHubWorldById(@PathVariable Long id){
         return hubWorldService.getHubworldById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/doors/{id}")
+    @GetMapping("/doors/id/{id}")
     public ResponseEntity<List<Door>> getHubWorldDoors(@PathVariable Long id){
         Optional<HubWorld> optionalHubWorld = hubWorldService.getHubworldById(id);
 
         return optionalHubWorld.map(hubWorld -> ResponseEntity.ok(hubWorld.getDoors())).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/honeycombs/{id}")
+    @GetMapping("/honeycombs/id/{id}")
     public ResponseEntity<List<Honeycomb>> getHubWorldHoneycombs(@PathVariable Long id){
         Optional<HubWorld> optionalHubWorld = hubWorldService.getHubworldById(id);
 
         return optionalHubWorld.map(hubWorld -> ResponseEntity.ok(hubWorld.getHoneycombs())).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/jiggies/{id}")
+    @GetMapping("/jiggies/id/{id}")
     public ResponseEntity<List<Jiggy>> getHubWorldJiggies(@PathVariable Long id){
         Optional<HubWorld> optionalHubWorld = hubWorldService.getHubworldById(id);
 
         return optionalHubWorld.map(hubWorld -> ResponseEntity.ok(hubWorld.getJiggies())).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/jiggypads/{id}")
+    @GetMapping("/jiggypads/id/{id}")
     public ResponseEntity<List<JiggyPad>> getHubWorldJiggyPads(@PathVariable Long id){
         Optional<HubWorld> optionalHubWorld = hubWorldService.getHubworldById(id);
 
