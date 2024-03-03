@@ -16,7 +16,6 @@ public class WorldService {
     public WorldService(WorldRepository worldRepository){
         this.worldRepository = worldRepository;
     }
-
     public Optional<World> findWorldById(Long id){
         return worldRepository.findById(id);
     }

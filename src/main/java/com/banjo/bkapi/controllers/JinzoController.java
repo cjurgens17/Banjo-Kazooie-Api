@@ -1,6 +1,7 @@
 package com.banjo.bkapi.controllers;
 
 
+import com.banjo.bkapi.Dtos.JinzoDTO;
 import com.banjo.bkapi.enums.Color;
 import com.banjo.bkapi.models.Jinzo;
 import com.banjo.bkapi.services.JinzoService;
@@ -40,10 +41,17 @@ public class JinzoController {
     }
 
     @GetMapping("/id/{id}")
-    public ResponseEntity<Jinzo> getJinzoById(@PathVariable Long id){
+    public ResponseEntity<JinzoDTO> getJinzoById(@PathVariable Long id){
         Optional<Jinzo> optionalJinzo = jinzoService.findById(id);
 
-        return optionalJinzo.map(ResponseEntity::ok)
+        return optionalJinzo.map(jinzo -> {
+            JinzoDTO jinzoDTO = new JinzoDTO();
+            jinzoDTO.setId(jinzo.getId());
+            jinzoDTO.setWorld_Id(jinzo.getWorld().getId());
+            jinzoDTO.setLocation(jinzo.getLocation());
+            jinzoDTO.setColor(jinzo.getColor());
+            return ResponseEntity.ok(jinzoDTO);
+        })
                 .orElse(ResponseEntity.notFound().build());
     }
     //need to add world entity first

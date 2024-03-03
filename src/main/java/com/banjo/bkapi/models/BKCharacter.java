@@ -17,7 +17,7 @@ import lombok.Setter;
 @Table(name ="characters")
 public class BKCharacter extends BaseEntity {
 
-    @Column(name="name")
+    @Column(name="name", length = 50)
     private String name;
 
     @Lob

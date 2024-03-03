@@ -1,11 +1,17 @@
 package com.banjo.bkapi.controllers;
 
+import com.banjo.bkapi.models.Jinzo;
 import com.banjo.bkapi.models.World;
+import com.banjo.bkapi.services.HoneycombService;
+import com.banjo.bkapi.services.JiggyService;
+import com.banjo.bkapi.services.JinzoService;
 import com.banjo.bkapi.services.WorldService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("world")
@@ -27,7 +33,8 @@ public class WorldController {
 
     @GetMapping("/id/{id}")
     public ResponseEntity<World> getWorldById(@PathVariable Long id){
-        return worldService.findWorldById(id).map(ResponseEntity::ok)
+        return worldService.findWorldById(id)
+                .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
