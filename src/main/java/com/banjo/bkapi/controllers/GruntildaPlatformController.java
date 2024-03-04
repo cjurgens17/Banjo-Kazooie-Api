@@ -1,5 +1,6 @@
 package com.banjo.bkapi.controllers;
 
+import com.banjo.bkapi.dtos.GruntildaPlatformDTO;
 import com.banjo.bkapi.models.GruntildaPlatform;
 import com.banjo.bkapi.models.World;
 import com.banjo.bkapi.services.GruntildaPlatformService;
@@ -32,9 +33,16 @@ public class GruntildaPlatformController {
     }
 
     @GetMapping("/id/{id}")
-    public ResponseEntity<GruntildaPlatform> getGruntildaPlatformById(@PathVariable Long id){
-        return gruntildaPlatformService.getGruntildaPlatformById(id)
-                .map(ResponseEntity::ok)
+    public ResponseEntity<GruntildaPlatformDTO> getGruntildaPlatformById(@PathVariable Long id){
+        Optional<GruntildaPlatform> optGruntildaPlatform = gruntildaPlatformService.getGruntildaPlatformById(id);
+
+        return optGruntildaPlatform.map(gruntildaPlatform -> {
+            GruntildaPlatformDTO gruntildaPlatformDTO = new GruntildaPlatformDTO();
+            gruntildaPlatformDTO.setLocation(gruntildaPlatform.getLocation());
+            gruntildaPlatformDTO.setWorld_id(gruntildaPlatform.getWorld().getId());
+            gruntildaPlatformDTO.setId(gruntildaPlatform.getId());
+            return ResponseEntity.ok(gruntildaPlatformDTO);
+        })
                 .orElse(ResponseEntity.notFound().build());
     }
 

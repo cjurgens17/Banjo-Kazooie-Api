@@ -1,17 +1,16 @@
-package com.banjo.bkapi.Dtos;
+package com.banjo.bkapi.dtos;
 
-import com.banjo.bkapi.enums.Color;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-
 @Getter
 @Setter
 @NoArgsConstructor
-public class JinzoDTO {
+public class JiggyPadDTO {
     private Long id;
-    private Long world_Id;
     private String location;
-    private Color color;
+    private Long world_id;
+    private Long hub_world_id;
 }

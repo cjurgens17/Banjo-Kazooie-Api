@@ -1,7 +1,5 @@
 package com.banjo.bkapi.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,19 +21,10 @@ public class Door  extends BaseEntity {
     @Column(name = "required_notes")
     private int requiredNotes;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "hub_world",insertable = false,updatable = false)
-    @JsonIgnore
-    @JsonIgnoreProperties("doors")
+    @ManyToOne
+    @JoinColumn(
+            name = "hub_world_id",
+            foreignKey = @ForeignKey(name = "fk_hub_world_id")
+    )
     private HubWorld hubWorld;
-
-    @Column(name = "hub_world_id")
-    private Long hubWorldId;
-
-    @PostLoad
-    public void postLoad(){
-        if(hubWorld != null){
-            hubWorldId = hubWorld.getId();
-        }
-    }
 }

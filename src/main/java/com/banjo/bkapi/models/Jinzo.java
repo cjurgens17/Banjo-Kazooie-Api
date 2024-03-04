@@ -16,7 +16,6 @@ import lombok.Setter;
 @Table(name="jinzos")
 public class Jinzo  extends BaseEntity{
 
-    //add color in string for insertion in db
     @Enumerated(EnumType.STRING)
     @Column(name="color")
     private Color color;

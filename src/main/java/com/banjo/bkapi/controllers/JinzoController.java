@@ -1,7 +1,7 @@
 package com.banjo.bkapi.controllers;
 
 
-import com.banjo.bkapi.Dtos.JinzoDTO;
+import com.banjo.bkapi.dtos.JinzoDTO;
 import com.banjo.bkapi.enums.Color;
 import com.banjo.bkapi.models.Jinzo;
 import com.banjo.bkapi.services.JinzoService;

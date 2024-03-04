@@ -23,32 +23,19 @@ public class Jiggy extends BaseEntity {
     @Column(name = "location")
     private String location;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "world", insertable = false,updatable = false)
-    @JsonIgnore
-    @JsonIgnoreProperties("jiggies")
+    @ManyToOne
+    @JoinColumn(
+            name = "world_id",
+            foreignKey = @ForeignKey(name = "fk_world_id")
+    )
+    @JsonBackReference
     private World world;
 
-    @Column(name = "world_id")
-    private Long worldId;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "hub_world", insertable = false,updatable = false)
-    @JsonIgnore
-    @JsonIgnoreProperties("jiggies")
+    @ManyToOne
+    @JoinColumn(
+            name = "hub_world_id",
+            foreignKey = @ForeignKey(name = "fk_hub_world_id")
+    )
+    @JsonBackReference
     private HubWorld hubWorld;
-
-    @Column(name = "hub_world_id")
-    private Long hubWorldId;
-
-    @PostLoad
-    public void postLoad(){
-        if(world != null){
-            worldId = world.getId();
-        }
-
-        if(hubWorld != null){
-            hubWorldId = hubWorld.getId();
-        }
-    }
 }

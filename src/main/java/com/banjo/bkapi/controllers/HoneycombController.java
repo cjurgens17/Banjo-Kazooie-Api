@@ -1,12 +1,14 @@
 package com.banjo.bkapi.controllers;
 
 
+import com.banjo.bkapi.dtos.HoneycombDTO;
 import com.banjo.bkapi.models.Honeycomb;
 import com.banjo.bkapi.services.HoneycombService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("honeycomb")
@@ -29,10 +31,18 @@ public class HoneycombController {
 
 
     @GetMapping("/id/{id}")
-    public ResponseEntity<Honeycomb> getHoneycombById(@PathVariable Long id){
-        return honeycombService.getHoneycombById(id)
-                .map(ResponseEntity::ok).
-                orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<HoneycombDTO> getHoneycombById(@PathVariable Long id){
+        Optional<Honeycomb> optHoneycomb = honeycombService.getHoneycombById(id);
+
+        return optHoneycomb.map(honeycomb -> {
+            HoneycombDTO honeycombDTO = new HoneycombDTO();
+            honeycombDTO.setWorld_id(honeycomb.getWorld().getId());
+            honeycombDTO.setHub_world_id(honeycomb.getHubWorld().getId());
+            honeycombDTO.setLocation(honeycomb.getLocation());
+            honeycombDTO.setId(honeycomb.getId());
+            return ResponseEntity.ok(honeycombDTO);
+        })
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @GetMapping("/all")

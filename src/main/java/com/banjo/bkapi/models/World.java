@@ -36,13 +36,15 @@ public class World extends BaseEntity {
     @JoinColumn(name = "gruntilda_platform_id")
     private GruntildaPlatform gruntildaPlatform;
 
-    @OneToMany(mappedBy = "world", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "world", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JsonManagedReference
     private List<Jinzo> jinzos = new ArrayList<>();
 
     @OneToMany(mappedBy = "world", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @JsonManagedReference
     private List<Honeycomb> honeycombs = new ArrayList<>();
 
     @OneToMany(mappedBy = "world", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @JsonManagedReference
     private List<Jiggy> jiggies = new ArrayList<>();
 }

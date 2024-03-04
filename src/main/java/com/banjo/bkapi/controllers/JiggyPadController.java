@@ -1,6 +1,7 @@
 package com.banjo.bkapi.controllers;
 
 
+import com.banjo.bkapi.dtos.JiggyPadDTO;
 import com.banjo.bkapi.models.JiggyPad;
 import com.banjo.bkapi.services.JiggyPadService;
 import org.springframework.http.ResponseEntity;
@@ -29,9 +30,16 @@ public class JiggyPadController {
     }
 
     @GetMapping("/id/{id}")
-    public ResponseEntity<JiggyPad> getJiggyPadById(@PathVariable Long id){
-        return jiggyPadService.getJiggyPadById(id)
-                .map(ResponseEntity::ok)
+    public ResponseEntity<JiggyPadDTO> getJiggyPadById(@PathVariable Long id){
+        Optional<JiggyPad> optJiggyPad = jiggyPadService.getJiggyPadById(id);
+                return optJiggyPad.map(jiggyPad -> {
+                    JiggyPadDTO jiggyPadDTO = new JiggyPadDTO();
+                    jiggyPadDTO.setWorld_id(jiggyPad.getWorld().getId());
+                    jiggyPadDTO.setHub_world_id(jiggyPad.getHubWorld().getId());
+                    jiggyPadDTO.setLocation(jiggyPad.getLocation());
+                    jiggyPadDTO.setId(jiggyPad.getId());
+                    return ResponseEntity.ok(jiggyPadDTO);
+                })
                 .orElse(ResponseEntity.notFound().build());
     }
 

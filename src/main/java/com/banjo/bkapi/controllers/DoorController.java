@@ -1,10 +1,13 @@
 package com.banjo.bkapi.controllers;
 
 
+import com.banjo.bkapi.dtos.DoorDTO;
 import com.banjo.bkapi.models.Door;
 import com.banjo.bkapi.services.DoorService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @RestController
 @RequestMapping("door")
@@ -24,9 +27,17 @@ public class DoorController {
     }
 
     @GetMapping("/id/{id}")
-    public ResponseEntity<Door> getDoorById(@PathVariable Long id){
-        return doorService.getDoorById(id)
-                .map(ResponseEntity::ok)
+    public ResponseEntity<DoorDTO> getDoorById(@PathVariable Long id){
+        Optional<Door> optDoor  = doorService.getDoorById(id);
+
+        return optDoor.map(door -> {
+            DoorDTO doorDTO = new DoorDTO();
+            doorDTO.setLocation(door.getLocation());
+            doorDTO.setHub_world_id(door.getHubWorld().getId());
+            doorDTO.setRequiredNotes(door.getRequiredNotes());
+            doorDTO.setId(door.getId());
+            return ResponseEntity.ok(doorDTO);
+        })
                 .orElse(ResponseEntity.notFound().build());
     }
 }

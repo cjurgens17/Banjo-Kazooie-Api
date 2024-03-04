@@ -1,12 +1,14 @@
 package com.banjo.bkapi.controllers;
 
 
+import com.banjo.bkapi.dtos.JiggyDTO;
 import com.banjo.bkapi.models.Jiggy;
 import com.banjo.bkapi.services.JiggyService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("jiggy")
@@ -28,9 +30,17 @@ public class JiggyController {
     }
 
     @GetMapping("/id/{id}")
-    public ResponseEntity<Jiggy> getJiggyById(@PathVariable Long id){
-        return jiggyService.findById(id)
-                .map(ResponseEntity::ok)
+    public ResponseEntity<JiggyDTO> getJiggyById(@PathVariable Long id){
+        Optional<Jiggy> optJiggy = jiggyService.findById(id);
+
+        return optJiggy.map(jiggy -> {
+            JiggyDTO jiggyDTO = new JiggyDTO();
+            jiggyDTO.setWorld_id(jiggy.getWorld().getId());
+            jiggyDTO.setLocation(jiggy.getLocation());
+            jiggyDTO.setHub_world_id(jiggy.getHubWorld().getId());
+            jiggyDTO.setId(jiggy.getId());
+            return ResponseEntity.ok(jiggyDTO);
+        })
                 .orElse(ResponseEntity.notFound().build());
     }
 
