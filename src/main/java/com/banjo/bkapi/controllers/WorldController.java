@@ -1,11 +1,13 @@
 package com.banjo.bkapi.controllers;
 
+import com.banjo.bkapi.cacheControl.CacheTimes;
 import com.banjo.bkapi.models.Jinzo;
 import com.banjo.bkapi.models.World;
 import com.banjo.bkapi.services.HoneycombService;
 import com.banjo.bkapi.services.JiggyService;
 import com.banjo.bkapi.services.JinzoService;
 import com.banjo.bkapi.services.WorldService;
+import org.springframework.http.CacheControl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -34,7 +36,10 @@ public class WorldController {
     @GetMapping("/id/{id}")
     public ResponseEntity<World> getWorldById(@PathVariable Long id){
         return worldService.findWorldById(id)
-                .map(ResponseEntity::ok)
+                .map(world -> ResponseEntity.ok()
+                        .cacheControl(CacheControl.maxAge(CacheTimes.GROUPED_ENTITY,CacheTimes.DAYS))
+                        .eTag(world.getName())
+                        .body(world))
                 .orElse(ResponseEntity.notFound().build());
     }
 

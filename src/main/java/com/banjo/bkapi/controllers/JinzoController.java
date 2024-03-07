@@ -1,15 +1,19 @@
 package com.banjo.bkapi.controllers;
 
 
+import com.banjo.bkapi.cacheControl.CacheTimes;
 import com.banjo.bkapi.dtos.JinzoDTO;
 import com.banjo.bkapi.enums.Color;
 import com.banjo.bkapi.models.Jinzo;
 import com.banjo.bkapi.services.JinzoService;
+import org.springframework.core.io.Resource;
+import org.springframework.http.CacheControl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 @RestController
 @RequestMapping("jinzo")
@@ -22,6 +26,8 @@ public class JinzoController {
              /jinzo/color/{color}
              /jinzo/id/{id}
              /jinzo/world/{id}
+
+             ---->CacheTimes is implemented for constants of time values and duration for caching<----
      */
 
     private final JinzoService jinzoService;
@@ -50,7 +56,10 @@ public class JinzoController {
             jinzoDTO.setWorld_Id(jinzo.getWorld().getId());
             jinzoDTO.setLocation(jinzo.getLocation());
             jinzoDTO.setColor(jinzo.getColor());
-            return ResponseEntity.ok(jinzoDTO);
+            return ResponseEntity.ok()
+                    .cacheControl(CacheControl.maxAge(CacheTimes.SINGLE_ENTITY, CacheTimes.DAYS))
+                    .eTag(jinzo.getLocation())
+                    .body(jinzoDTO);
         })
                 .orElse(ResponseEntity.notFound().build());
     }

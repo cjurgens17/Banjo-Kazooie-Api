@@ -1,9 +1,11 @@
 package com.banjo.bkapi.controllers;
 
 
+import com.banjo.bkapi.cacheControl.CacheTimes;
 import com.banjo.bkapi.dtos.DoorDTO;
 import com.banjo.bkapi.models.Door;
 import com.banjo.bkapi.services.DoorService;
+import org.springframework.http.CacheControl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,7 +38,10 @@ public class DoorController {
             doorDTO.setHub_world_id(door.getHubWorld().getId());
             doorDTO.setRequiredNotes(door.getRequiredNotes());
             doorDTO.setId(door.getId());
-            return ResponseEntity.ok(doorDTO);
+            return ResponseEntity.ok()
+                    .cacheControl(CacheControl.maxAge(CacheTimes.SINGLE_ENTITY,CacheTimes.DAYS))
+                    .eTag(door.getLocation())
+                    .body(doorDTO);
         })
                 .orElse(ResponseEntity.notFound().build());
     }

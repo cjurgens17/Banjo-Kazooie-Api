@@ -1,9 +1,11 @@
 package com.banjo.bkapi.controllers;
 
 
+import com.banjo.bkapi.cacheControl.CacheTimes;
 import com.banjo.bkapi.dtos.HoneycombDTO;
 import com.banjo.bkapi.models.Honeycomb;
 import com.banjo.bkapi.services.HoneycombService;
+import org.springframework.http.CacheControl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,7 +42,10 @@ public class HoneycombController {
             honeycombDTO.setHub_world_id(honeycomb.getHubWorld().getId());
             honeycombDTO.setLocation(honeycomb.getLocation());
             honeycombDTO.setId(honeycomb.getId());
-            return ResponseEntity.ok(honeycombDTO);
+            return ResponseEntity.ok()
+                    .cacheControl(CacheControl.maxAge(CacheTimes.SINGLE_ENTITY,CacheTimes.DAYS))
+                    .eTag(honeycomb.getLocation())
+                    .body(honeycombDTO);
         })
                 .orElse(ResponseEntity.notFound().build());
     }

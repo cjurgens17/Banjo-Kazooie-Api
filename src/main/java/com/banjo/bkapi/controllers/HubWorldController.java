@@ -1,8 +1,10 @@
 package com.banjo.bkapi.controllers;
 
 
+import com.banjo.bkapi.cacheControl.CacheTimes;
 import com.banjo.bkapi.models.*;
 import com.banjo.bkapi.services.HubWorldService;
+import org.springframework.http.CacheControl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,7 +37,10 @@ public class HubWorldController {
     @GetMapping("/id/{id}")
     public ResponseEntity<HubWorld> getHubWorldById(@PathVariable Long id){
         return hubWorldService.getHubworldById(id)
-                .map(ResponseEntity::ok)
+                .map(hubWorld -> ResponseEntity.ok()
+                        .cacheControl(CacheControl.maxAge(CacheTimes.SINGLE_ENTITY,CacheTimes.DAYS))
+                        .eTag(hubWorld.toString())
+                        .body(hubWorld))
                 .orElse(ResponseEntity.notFound().build());
     }
 

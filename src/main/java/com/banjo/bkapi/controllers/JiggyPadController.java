@@ -1,9 +1,11 @@
 package com.banjo.bkapi.controllers;
 
 
+import com.banjo.bkapi.cacheControl.CacheTimes;
 import com.banjo.bkapi.dtos.JiggyPadDTO;
 import com.banjo.bkapi.models.JiggyPad;
 import com.banjo.bkapi.services.JiggyPadService;
+import org.springframework.http.CacheControl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,7 +40,10 @@ public class JiggyPadController {
                     jiggyPadDTO.setHub_world_id(jiggyPad.getHubWorld().getId());
                     jiggyPadDTO.setLocation(jiggyPad.getLocation());
                     jiggyPadDTO.setId(jiggyPad.getId());
-                    return ResponseEntity.ok(jiggyPadDTO);
+                    return ResponseEntity.ok()
+                            .cacheControl(CacheControl.maxAge(CacheTimes.SINGLE_ENTITY,CacheTimes.DAYS))
+                            .eTag(jiggyPad.getLocation())
+                            .body(jiggyPadDTO);
                 })
                 .orElse(ResponseEntity.notFound().build());
     }

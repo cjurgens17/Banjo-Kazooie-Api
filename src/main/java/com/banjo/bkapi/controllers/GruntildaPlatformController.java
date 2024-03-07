@@ -1,10 +1,12 @@
 package com.banjo.bkapi.controllers;
 
+import com.banjo.bkapi.cacheControl.CacheTimes;
 import com.banjo.bkapi.dtos.GruntildaPlatformDTO;
 import com.banjo.bkapi.models.GruntildaPlatform;
 import com.banjo.bkapi.models.World;
 import com.banjo.bkapi.services.GruntildaPlatformService;
 import com.banjo.bkapi.services.WorldService;
+import org.springframework.http.CacheControl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,7 +43,10 @@ public class GruntildaPlatformController {
             gruntildaPlatformDTO.setLocation(gruntildaPlatform.getLocation());
             gruntildaPlatformDTO.setWorld_id(gruntildaPlatform.getWorld().getId());
             gruntildaPlatformDTO.setId(gruntildaPlatform.getId());
-            return ResponseEntity.ok(gruntildaPlatformDTO);
+            return ResponseEntity.ok()
+                    .cacheControl(CacheControl.maxAge(CacheTimes.SINGLE_ENTITY,CacheTimes.DAYS))
+                    .eTag(gruntildaPlatform.getLocation())
+                    .body(gruntildaPlatformDTO);
         })
                 .orElse(ResponseEntity.notFound().build());
     }
