@@ -10,6 +10,7 @@ import org.springframework.http.CacheControl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -52,21 +53,39 @@ public class GruntildaPlatformController {
     }
 
     @GetMapping("/world/{worldName}")
-    public ResponseEntity<GruntildaPlatform> getGruntildaPlatformByWorld(@PathVariable String worldName){
+    public ResponseEntity<GruntildaPlatformDTO> getGruntildaPlatformByWorld(@PathVariable String worldName){
         Optional<World> persistenceWorld = worldService.getWorldByName(worldName);
-        if(persistenceWorld.isEmpty()) return ResponseEntity.notFound().build();
 
-        World capturedWorld = persistenceWorld.get();
+        return persistenceWorld.map(world -> {
+            GruntildaPlatformDTO gruntildaPlatformDTO = new GruntildaPlatformDTO();
+            gruntildaPlatformDTO.setId(world.getGruntildaPlatform().getId());
+            gruntildaPlatformDTO.setLocation(world.getGruntildaPlatform().getLocation());
+            gruntildaPlatformDTO.setWorld_id(world.getId());
+            return
 
-        GruntildaPlatform platform = capturedWorld.getGruntildaPlatform();
-
-        return platform != null ? ResponseEntity.ok(platform) : ResponseEntity.notFound().build();
+                    ResponseEntity.ok(gruntildaPlatformDTO);
+        })
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<GruntildaPlatform>> getAllGruntildaPlatforms(){
-        return gruntildaPlatformService.getAllGruntildaPlatforms()
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<List<GruntildaPlatformDTO>> getAllGruntildaPlatforms() {
+        Optional<List<GruntildaPlatform>> optGruntildaPlatforms = gruntildaPlatformService.getAllGruntildaPlatforms();
+
+        if (optGruntildaPlatforms.isPresent()) {
+            List<GruntildaPlatform> gruntildaPlatforms = optGruntildaPlatforms.get();
+            List<GruntildaPlatformDTO> gruntildaPlatformDTOS = new ArrayList<>();
+
+            for (GruntildaPlatform platform : gruntildaPlatforms) {
+                GruntildaPlatformDTO gruntildaPlatformDTO = new GruntildaPlatformDTO();
+                gruntildaPlatformDTO.setId(platform.getId());
+                gruntildaPlatformDTO.setLocation(platform.getLocation());
+                gruntildaPlatformDTO.setWorld_id(platform.getWorld().getId());
+                gruntildaPlatformDTOS.add(gruntildaPlatformDTO);
+            }
+            return ResponseEntity.ok(gruntildaPlatformDTOS);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

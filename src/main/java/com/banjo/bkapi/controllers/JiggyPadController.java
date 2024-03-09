@@ -9,9 +9,11 @@ import org.springframework.http.CacheControl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("jiggyPad")
@@ -49,16 +51,25 @@ public class JiggyPadController {
     }
 
     @GetMapping("/world/{id}")
-    public ResponseEntity<JiggyPad> getJiggyPadByWorld(@PathVariable Long id){
+    public ResponseEntity<JiggyPadDTO> getJiggyPadByWorld(@PathVariable Long id){
         Optional<List<JiggyPad>> optJiggyPads = jiggyPadService.getAllJiggyPads();
 
-        if(optJiggyPads.isPresent()){
-            return optJiggyPads
-                    .flatMap(jiggyPads -> jiggyPads.stream()
-                            .filter(jiggyPad -> Objects.equals(jiggyPad.getWorld().getId(), id))
-                            .findFirst()
-                            .map(ResponseEntity::ok))
-                    .orElse(ResponseEntity.notFound().build());
+        if (optJiggyPads.isPresent()) {
+            List<JiggyPad> jiggyPads = optJiggyPads.get();
+
+            //Filter jiggyPads by world ID
+            Optional<JiggyPad> jiggyPad = jiggyPads.stream()
+                    .filter(pad -> pad.getWorld().getId().equals(id)).findFirst();
+
+            if(jiggyPad.isPresent()) {
+                JiggyPad foundJiggyPad = jiggyPad.get();
+                JiggyPadDTO jiggyPadDTO = new JiggyPadDTO();
+                jiggyPadDTO.setId(foundJiggyPad.getId());
+                jiggyPadDTO.setLocation(foundJiggyPad.getLocation());
+                jiggyPadDTO.setWorld_id(foundJiggyPad.getWorld().getId());
+                jiggyPadDTO.setHub_world_id(foundJiggyPad.getHubWorld().getId());
+                return ResponseEntity.ok().body(jiggyPadDTO);
+            }
         }
         return ResponseEntity.notFound().build();
     }

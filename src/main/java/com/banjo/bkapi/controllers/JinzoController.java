@@ -11,6 +11,7 @@ import org.springframework.http.CacheControl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
@@ -37,13 +38,27 @@ public class JinzoController {
     }
 
     @GetMapping("/color/{color}")
-    public ResponseEntity<List<Jinzo>> getAllJinzoByColor(@PathVariable String color){
+    public ResponseEntity<List<JinzoDTO>> getAllJinzoByColor(@PathVariable String color){
         Color requestedColor = Color.getColorFromString(color);
 
         Optional<List<Jinzo>> optionalJinzos = jinzoService.findByColor(requestedColor);
 
-        return optionalJinzos.map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        if(optionalJinzos.isPresent()){
+            List<Jinzo> jinzos = optionalJinzos.get();
+            List<JinzoDTO> jinzoDTOS = new ArrayList<>();
+
+            for(Jinzo jinzo : jinzos){
+                JinzoDTO jinzoDTO = new JinzoDTO();
+                jinzoDTO.setId(jinzo.getId());
+                jinzoDTO.setWorld_Id(jinzo.getWorld().getId());
+                jinzoDTO.setLocation(jinzo.getLocation());
+                jinzoDTO.setColor(jinzo.getColor());
+                jinzoDTOS.add(jinzoDTO);
+            }
+            return ResponseEntity.ok(jinzoDTOS);
+        }else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @GetMapping("/id/{id}")
@@ -65,11 +80,25 @@ public class JinzoController {
     }
     //need to add world entity first
     @GetMapping("/world/{id}")
-    public ResponseEntity<List<Jinzo>> getJinzoByWorldId(@PathVariable Long id){
+    public ResponseEntity<List<JinzoDTO>> getJinzoByWorldId(@PathVariable Long id){
         Optional<List<Jinzo>> optionalJinzos = jinzoService.findByWorldId(id);
 
-        return optionalJinzos.map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        if(optionalJinzos.isPresent()){
+            List<Jinzo> jinzos = optionalJinzos.get();
+            List<JinzoDTO> jinzoDTOS = new ArrayList<>();
+
+            for(Jinzo jinzo : jinzos){
+                JinzoDTO jinzoDTO = new JinzoDTO();
+                jinzoDTO.setId(jinzo.getId());
+                jinzoDTO.setWorld_Id(jinzo.getWorld().getId());
+                jinzoDTO.setLocation(jinzo.getLocation());
+                jinzoDTO.setColor(jinzo.getColor());
+                jinzoDTOS.add(jinzoDTO);
+            }
+            return ResponseEntity.ok(jinzoDTOS);
+        }else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
 

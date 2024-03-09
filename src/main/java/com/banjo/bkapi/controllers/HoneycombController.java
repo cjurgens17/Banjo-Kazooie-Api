@@ -9,6 +9,7 @@ import org.springframework.http.CacheControl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -51,16 +52,46 @@ public class HoneycombController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<Honeycomb>> getAllHoneycombs(){
-        return honeycombService.getAllHoneycombs()
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<List<HoneycombDTO>> getAllHoneycombs(){
+        Optional<List<Honeycomb>> optHoneycombs = honeycombService.getAllHoneycombs();
+
+        if (optHoneycombs.isPresent()) {
+            List<Honeycomb> honeycombs = optHoneycombs.get();
+            List<HoneycombDTO> honeycombDTOS = new ArrayList<>();
+
+            for (Honeycomb honeycomb : honeycombs) {
+                HoneycombDTO honeycombDTO = new HoneycombDTO();
+                honeycombDTO.setId(honeycomb.getId());
+                honeycombDTO.setLocation(honeycomb.getLocation());
+                honeycombDTO.setWorld_id(honeycomb.getWorld().getId());
+                honeycombDTO.setHub_world_id(honeycomb.getHubWorld().getId());
+                honeycombDTOS.add(honeycombDTO);
+            }
+            return ResponseEntity.ok(honeycombDTOS);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @GetMapping("/world/{id}")
-    public ResponseEntity<List<Honeycomb>> getHoneycombByWorld(@PathVariable Long id){
-        return honeycombService.findHoneycombsByWorld(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<List<HoneycombDTO>> getHoneycombByWorld(@PathVariable Long id){
+        Optional<List<Honeycomb>> optHoneycombs = honeycombService.findHoneycombsByWorld(id);
+
+        if(optHoneycombs.isPresent()){
+            List<Honeycomb> honeycombs = optHoneycombs.get();
+            List<HoneycombDTO> honeycombDTOS = new ArrayList<>();
+
+            for(Honeycomb honeycomb : honeycombs){
+                HoneycombDTO  honeycombDTO = new HoneycombDTO();
+                honeycombDTO.setId(honeycomb.getId());
+                honeycombDTO.setLocation(honeycomb.getLocation());
+                honeycombDTO.setWorld_id(honeycomb.getWorld().getId());
+                honeycombDTO.setHub_world_id(honeycomb.getHubWorld().getId());
+                honeycombDTOS.add(honeycombDTO);
+            }
+            return ResponseEntity.ok(honeycombDTOS);
+        }else{
+            return ResponseEntity.notFound().build();
+        }
     }
 }

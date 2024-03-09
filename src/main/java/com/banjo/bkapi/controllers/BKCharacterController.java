@@ -42,7 +42,10 @@ public class BKCharacterController {
     public ResponseEntity<BKCharacter> getBKCharacterById(@PathVariable Long id){
         Optional<BKCharacter> optionalBKCharacter = bkCharacterService.findCharacterById(id);
 
-        return optionalBKCharacter.map(ResponseEntity::ok)
+        return optionalBKCharacter.map(bkCharacter -> ResponseEntity.ok()
+                        .cacheControl(CacheControl.maxAge(CacheTimes.SINGLE_ENTITY,CacheTimes.DAYS))
+                        .eTag(bkCharacter.getName())
+                        .body(bkCharacter))
                 .orElse(ResponseEntity.notFound().build());
     }
 
